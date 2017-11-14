@@ -14,33 +14,40 @@
 			elem.style.left='50px';
 			elem.style.top='100px';
 			// 5妙后再调用move函数
-			movement=setTimeout('moveMessage',5000);
+			//movement=setTimeout('moveMessage',5000);
 		}
 		// 改变位置
 		function moveMessage(){
 			var elem=document.getElementById('message');
-			var l=elem.style.left;
-			var t=elem.style.top;
-			if(l=='200px'&&t=='100px'){
+			// l与t都是字符串，为了比较，把他们转化成数字
+			var l=parseInt(elem.style.left);
+			var t=parseInt(elem.style.top);
+
+			if(l==200&&t==100){
 				return;
 			}
-			else{
-				if(l<200){
-					l++;
-				}
-				if(l>200){
-					l--;
-				}
-				if(t>100){
-					t--;
-				}
-				if(t<100){
-					t++
-				}
+		
+			if(l<200){
+				l++;
 			}
-			setTimeout('moveMessage',1000);
+			if(l>200){
+				l--;
+			}
+			if(t>100){
+				t--;
+			}
+			if(t<100){
+				t++
+			}
+		
+			//到这里只是l和t发生了变化，message的位置还没有赋值，所以浏览器才没效果
+			elem.style.left=l+'px';
+			elem.style.top=t+'px';
+
+			movement=setTimeout('moveMessage()',10);
 		}
 		positionMessage();
+		moveMessage();
 	</script>
 </body>
 </html>
