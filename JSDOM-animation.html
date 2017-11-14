@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JSDom Animation</title>
+</head>
+<body>
+	<p id="message">wheel</p>
+	<script type="text/javascript">
+		// 设置位置
+		function positionMessage(){
+			var elem=document.getElementById('message');
+			elem.style.position='absolute';
+			elem.style.left='50px';
+			elem.style.top='100px';
+			// 5妙后再调用move函数
+			movement=setTimeout('moveMessage',5000);
+		}
+		// 改变位置
+		function moveMessage(){
+			var elem=document.getElementById('message');
+			var l=elem.style.left;
+			var t=elem.style.top;
+			if(l=='200px'&&t=='100px'){
+				return;
+			}
+			else{
+				if(l<200){
+					l++;
+				}
+				if(l>200){
+					l--;
+				}
+				if(t>100){
+					t--;
+				}
+				if(t<100){
+					t++
+				}
+			}
+			setTimeout('moveMessage',1000);
+		}
+		positionMessage();
+	</script>
+</body>
+</html>
