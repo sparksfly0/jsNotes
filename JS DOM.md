@@ -210,6 +210,7 @@ function moveMessage(){
 v=setTimeout('function',interval);
 ```
 然后把这个变量作为clearTimeout的参数`clearTimeout(v);`
+
 5. 修改positionMessage函数，让他在5s之后再去调用moveMessage。
 ```javascript
 function positionMessage(){
@@ -222,8 +223,74 @@ function positionMessage(){
 }
 ```
 此时动画是跳跃效果，从5s后起点一下子到了终点。
+
 6. 更新moveMessage，让元素的移动以渐变的方式发生
  a.获得元素的当前位置；
  b.如果元素已经到达他的目的地，则退出这个函数；
  c.如果元素尚未到达他的目的地，则把他向目的地移近一些；
  d.经过一段时间间隔之后从步骤a开始重复上述步骤。
+```javascript
+function moveMessage(){
+    var elem=document.getElementById('message');
+    // l与t都是字符串，为了比较，把他们转化成数字
+    var l=parseInt(elem.style.left);
+    var t=parseInt(elem.style.top);
+
+    if(l==200&&t==100){
+        return;
+    }
+        
+    if(l<200){
+        l++;
+    }
+    if(l>200){
+        l--;
+    }
+    if(t>100){
+        t--;
+    }
+    if(t<100){
+        t++
+    }
+        
+    //到这里只是l和t发生了变化，message的位置还没有赋值，所以浏览器才没效果
+    elem.style.left=l+'px';
+    elem.style.top=t+'px';
+    //函数名后面要有括号
+    movement=setTimeout('moveMessage()',10);
+}
+```
+7. 抽象moveMessage()
+抽象moveMessage()，就是让moveMessage()变得通用。
+需要抽象的有，id，终点位置，时间。函数名字改为更通用moveElement()。
+```javascript
+function moveElement(id,left,top,time){
+    var elem=document.getElementById(id);
+    // l与t都是字符串，为了比较，把他们转化成数字
+    var l=parseInt(elem.style.left);
+    var t=parseInt(elem.style.top);
+
+    if(l==left&&t==top){
+        return;
+    }
+        
+    if(l<left){
+        l++;
+    }
+    if(l>left){
+        l--;
+    }
+    if(t>top){
+        t--;
+    }
+    if(t<top){
+        t++
+    }
+        
+    //到这里只是l和t发生了变化，message的位置还没有赋值，所以浏览器才没效果
+    elem.style.left=l+'px';
+    elem.style.top=t+'px';
+    //函数名后面要有括号
+    movement=setTimeout('moveElement()',time);
+}
+```

@@ -5,6 +5,8 @@
 	<title>JSDom Animation</title>
 </head>
 <body>
+	<h1>JS Animation</h1>
+	<h2>移动</h2>
 	<p id="message">wheel</p>
 	<script type="text/javascript">
 		// 设置位置
@@ -15,39 +17,98 @@
 			elem.style.top='100px';
 			// 5妙后再调用move函数
 			//movement=setTimeout('moveMessage',5000);
+			moveElement('message',100,100,10);
 		}
 		// 改变位置
-		function moveMessage(){
-			var elem=document.getElementById('message');
+		function moveElement(id,final_x,final_y,interval){
+			var elem=document.getElementById(id);
+			console.log(elem);
+
 			// l与t都是字符串，为了比较，把他们转化成数字
 			var l=parseInt(elem.style.left);
 			var t=parseInt(elem.style.top);
+			console.log(l);
 
-			if(l==200&&t==100){
+			if(l==final_x&&t==final_y){
 				return;
 			}
 		
-			if(l<200){
+			if(l<final_x){
 				l++;
 			}
-			if(l>200){
+			if(l>final_x){
 				l--;
 			}
-			if(t>100){
+			if(t>final_y){
 				t--;
 			}
-			if(t<100){
+			if(t<final_y){
 				t++
 			}
 		
 			//到这里只是l和t发生了变化，message的位置还没有赋值，所以浏览器才没效果
 			elem.style.left=l+'px';
 			elem.style.top=t+'px';
-
-			movement=setTimeout('moveMessage()',10);
+			// 拼接字符串费了很大的力气啊，id上要有引号才行
+			var repeat='moveElement("'+id+'",'+final_x+','+final_y+','+interval+')';
+			console.log(repeat);
+			movement=setTimeout(repeat,interval);
 		}
-		positionMessage();
-		moveMessage();
+		//positionMessage();
+		// 把moveElement放进positionMessage里面和放在外面效果一样啊
+		//moveElement('message',100,100,10);
 	</script>
+	<h2>实用的动画-鼠标在某个链接上时，展示一张预览图片</h2>
+	<h3>要做的事</h3>
+	<ul>
+		<li>为所有的预览图片生成一张“集体照”形式的图片；</li>
+		<li>隐藏这张“集体照”的绝大部分；</li>
+		<li>当用户把鼠标指针悬停在某个链接上方时，只显示这张“集体照”图片的相应部分；</li>
+	</ul>
+	<!-- 结构开始 -->
+	<ol id="linklist">
+		<li><a href="">结构</a></li>
+		<li><a href="">表现</a></li>
+		<li><a href="">行为</a></li>
+	</ol>
+	<div id="slideshow">
+		<img id="slideImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510846882834&di=9d0008e3f22452b7542f1c03814181b9&imgtype=0&src=http%3A%2F%2Fimages2015.cnblogs.com%2Fblog%2F446475%2F201604%2F446475-20160414095734426-712114020.png" alt="">
+	</div>
+	<style type="text/css">
+	#slideshow{
+		width:100px;
+		height:100px;
+		overflow: hidden;
+		position: relative;
+	}
+	</style>
+	<script>
+		// 用moveElement()来移动图片，
+		// 当鼠标放到第1个li上时图片位置是（0，0）
+		// 当鼠标放到第2个li上时图片位置是（100，0）
+		// 当鼠标放到第3个li上时图片位置是（200，0）
+		function prepareSlideshow(){
+			// 获取img
+			var slideImg=document.getElementById('slideImg');
+			slideImg.style.position='absolute';
+			slideImg.style.left='0px';
+			slideImg.style.top='0px';
+			// 获取ol中的每个li
+			var linklist=document.getElementById('linklist');
+			// getElementsByTagName,注意Elements的s
+			var linkli=linklist.getElementsByTagName('li');
+			linkli[0].onmouseover=function(){
+				moveElement('slideImg',0,0,1);
+			}
+			linkli[1].onmouseover=function(){
+				moveElement('slideImg',-100,0,1);
+			}
+			linkli[2].onmouseover=function(){
+				moveElement('slideImg',-200,0,1);
+			}
+		}
+		prepareSlideshow();
+	</script>
+
 </body>
 </html>
