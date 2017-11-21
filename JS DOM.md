@@ -272,8 +272,7 @@ function moveElement(id,left,top,time){
 
     if(l==left&&t==top){
         return;
-    }
-        
+    } 
     if(l<left){
         l++;
     }
@@ -286,11 +285,78 @@ function moveElement(id,left,top,time){
     if(t<top){
         t++
     }
-        
     //到这里只是l和t发生了变化，message的位置还没有赋值，所以浏览器才没效果
     elem.style.left=l+'px';
     elem.style.top=t+'px';
     //函数名后面要有括号
-    movement=setTimeout('moveElement()',time);
+   var repeat=
+ 'moveElement("'+id+'",'+final_x+','+final_y+','+interval+')';
+   movement=setTimeout(repeat,interval);
+}
+```
+8. 如果鼠标快读移动，setTimeout就来不及执行，就会产生动画滞后的效果，消除滞后效果用`clearTimeout(movement);`
+
+ ```javascript
+ function moveElement(id,left,top,time){
+    var elem=document.getElementById(id);
+    // l与t都是字符串，为了比较，把他们转化成数字
+    var l=parseInt(elem.style.left);
+    var t=parseInt(elem.style.top);
+
+    if(l==left&&t==top){
+        return;
+    } 
+    if(l<left){
+        l++;
+    }
+    if(l>left){
+        l--;
+    }
+    if(t>top){
+        t--;
+    }
+    if(t<top){
+        t++
+    }
+    //到这里只是l和t发生了变化，message的位置还没有赋值，所以浏览器才没效果
+    elem.style.left=l+'px';
+    elem.style.top=t+'px';
+    
+    // 1.在未设置movement之前判断他是否存在，会报错
+    /*if(movement){
+    clearTimeout(moveElement);
+    }
+    movement=setTimeout(repeat,interval);
+    */
+    
+    //2.将movement变为elem的属性就可以检测他是否存在了，如果存在，就清除，重新执行。
+    if(elem.movement){
+    clearTimeout(elem.movement);
+    }
+    elem.movement=setTimeout(repeat,interval);
+}
+ ```
+9. moveElement()每次移动1px过慢,最好是根据距离来决定移动的值，越近就移动越小
+计算起点与终点的差值，每次移动这个值的十分之一。
+```javascript
+var dist=0;
+var dist;
+// Math.ceil方法返回一个不小于dist的整数，确保每次至少能移动1px
+if(l<final_x){
+    dist=Math.ceil((final_x-l)/10);
+    console.log(dist);
+    l=l+dist;
+}
+if(l>final_x){
+    dist=Math.ceil((l-final_x)/10);
+    l=l-dist;
+}
+if(t>final_y){
+    dist=Math.ceil((t-final_y)/10);
+    t=t-dist;
+}
+if(t<final_y){
+    dist=Math.ceil((final_y-t)/10);
+    t=t+dist;
 }
 ```

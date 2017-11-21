@@ -52,7 +52,73 @@
 			// 拼接字符串费了很大的力气啊，id上要有引号才行
 			var repeat='moveElement("'+id+'",'+final_x+','+final_y+','+interval+')';
 			console.log(repeat);
+
+			// 1.在未设置movement之前判断他是否存在，会报错
+			/*if(movement){
+				clearTimeout(moveElement);
+			}
 			movement=setTimeout(repeat,interval);
+			*/
+
+			//2.将movement变为elem的属性就可以检测他是否存在了，如果存在，就清除，重新执行。
+			if(elem.movement){
+				clearTimeout(elem.movement);
+			}
+			elem.movement=setTimeout(repeat,interval);
+
+		}
+		// 改进moveElement(),每次移动1px过慢了。计算起点终点的差值，每次前进这个值得十分之一
+		function moveElement2(id,final_x,final_y,interval){
+			var elem=document.getElementById(id);
+			//console.log(elem);
+
+			// l与t都是字符串，为了比较，把他们转化成数字
+			var l=parseInt(elem.style.left);
+			var t=parseInt(elem.style.top);
+			//console.log(l);
+
+			if(l==final_x&&t==final_y){
+				return;
+			}
+			var dist;
+			// Math.ceil方法返回一个不小于dist的整数，确保每次至少能移动1px
+			if(l<final_x){
+				dist=Math.ceil((final_x-l)/10);
+				console.log(dist);
+				l=l+dist;
+			}
+			if(l>final_x){
+				dist=Math.ceil((l-final_x)/10);
+				l=l-dist;
+			}
+			if(t>final_y){
+				dist=Math.ceil((t-final_y)/10);
+				t=t-dist;
+			}
+			if(t<final_y){
+				dist=Math.ceil((final_y-t)/10);
+				t=t+dist;
+			}
+		
+			//到这里只是l和t发生了变化，message的位置还没有赋值，所以浏览器才没效果
+			elem.style.left=l+'px';
+			elem.style.top=t+'px';
+			// 拼接字符串费了很大的力气啊，id上要有引号才行
+			var repeat='moveElement2("'+id+'",'+final_x+','+final_y+','+interval+')';
+			//console.log(repeat);
+
+			// 1.在未设置movement之前判断他是否存在，会报错
+			/*if(movement){
+				clearTimeout(moveElement);
+			}
+			movement=setTimeout(repeat,interval);
+			*/
+
+			//2.将movement变为elem的属性就可以检测他是否存在了，如果存在，就清除，重新执行。
+			if(elem.movement){
+				clearTimeout(elem.movement);
+			}
+			elem.movement=setTimeout(repeat,interval);
 		}
 		//positionMessage();
 		// 把moveElement放进positionMessage里面和放在外面效果一样啊
@@ -98,13 +164,13 @@
 			// getElementsByTagName,注意Elements的s
 			var linkli=linklist.getElementsByTagName('li');
 			linkli[0].onmouseover=function(){
-				moveElement('slideImg',0,0,1);
+				moveElement2('slideImg',0,0,1);
 			}
 			linkli[1].onmouseover=function(){
-				moveElement('slideImg',-100,0,1);
+				moveElement2('slideImg',-100,0,1);
 			}
 			linkli[2].onmouseover=function(){
-				moveElement('slideImg',-200,0,1);
+				moveElement2('slideImg',-200,0,1);
 			}
 		}
 		prepareSlideshow();
