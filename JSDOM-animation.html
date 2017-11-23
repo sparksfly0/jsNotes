@@ -176,5 +176,47 @@
 		prepareSlideshow();
 	</script>
 
+	<h1>js图片库</h1>
+	<p>点击某个链接时能在本页面打开图片，同时看到图片链接清单和图片</p>
+	<p>点击哪个链接，就把链接的href的值赋给img的src</p>
+	<ul id="imgLinkList">
+		<li><a href="http://pic3.qiyipic.com/common/lego/20171122/161fe39bacb242f8b7a57d72503e4184.jpg">青春旅社</a></li>
+		<li><a href="http://pic3.qiyipic.com/common/lego/20171123/c1542c129cd645a9a1f7e1565236c090.jpg">冒犯家族</a></li>
+		<li><a href="http://m.qiyipic.com/common/lego/20171123/1c562347f7fa490292d6445646e918a8.jpg">王源</a></li>
+		<li><a href="http://pic0.qiyipic.com/common/20171123/6126c6f16909433bbb77f3c33af4937d.jpg">张涵予</a></li>
+	</ul>
+
+	<ul>
+		<li><a href="http://pic3.qiyipic.com/common/lego/20171122/161fe39bacb242f8b7a57d72503e4184.jpg" onclick="showPic2(this);return false;">青春旅社-绑定书上例子</a></li>
+		<li><a href="http://pic3.qiyipic.com/common/lego/20171123/c1542c129cd645a9a1f7e1565236c090.jpg" onclick="showPic2(this);return false;">冒犯家族-绑定书上例子</a></li>
+		<li><a href="http://m.qiyipic.com/common/lego/20171123/1c562347f7fa490292d6445646e918a8.jpg" onclick="showPic2(this);return false;">王源-绑定书上例子</a></li>
+		<li><a href="http://pic0.qiyipic.com/common/20171123/6126c6f16909433bbb77f3c33af4937d.jpg" onclick="showPic2(this);return false;">张涵予-绑定书上例子</a></li>
+	</ul>
+	<img id="placeholder" src="http://www.qiyipic.com/common/fix/public_images/logo108x35_black.png" alt="">
+	<script type="text/javascript">
+		// 我的函数
+		function showPic(){
+			var placeholder=document.getElementById('placeholder'),
+			imgLinkList=document.getElementById('imgLinkList');
+			var imgLinkLi=imgLinkList.getElementsByTagName('li');
+			for(var i=0;i<imgLinkLi.length;i++){
+				var imgLink=imgLinkLi[i].getElementsByTagName('a');
+				imgLink[0].onclick=function(){
+					var imgSrc=this.getAttribute('href');
+					placeholder.setAttribute('src',imgSrc);
+					// 阻止a标签默认的跳转事件
+					return false;
+				}
+			}
+		}
+		// 书上的例子,把a作为参数传过去，不需要循环了
+		function showPic2(whichpic){
+			var source=whichpic.getAttribute('href');
+			var placeholder=document.getElementById('placeholder');
+			placeholder.setAttribute('src',source);
+		}
+		
+
+	</script>
 </body>
 </html>
