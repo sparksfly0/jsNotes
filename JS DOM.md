@@ -114,22 +114,28 @@ document对象也能获得网页上的任何一个元素的信息。
 
 ### 节点
 文档是由节点构成的集合，节点有很多类型，先看其中的三种：元素节点，文本节点，属性节点。
+
 #### 元素节点
 标签的名字就是元素的名字，元素可以包含其他元素。文档中每个元素节点都是一个对象。
+
 #### 文本节点
 比如p元素包含着文本节点。
+
 #### 属性节点
 比如 `title='model'`是一个属性节点
+
 #### 获取元素
 3种DOM方法可获取元素节点，分别通过元素ID，标签名字，类名字来获取。
 ##### 1.getElementById
 `document.getElementById('id');`
+
 ##### 2.getElementByTagName
 返回一个对象数组
 `document.getElementByTagName('li');`
 通配符'\*'可以作为参数，返回文档里所有节点
 某份文档里总共有多少个元素节点
 `document.getElementByTagName('*').length;`
+
 ##### 3.getElementByClassName
 HTML5 DOM中新增的
 `document.getElementByClassName('important sale')`
@@ -149,6 +155,32 @@ HTML5 DOM中新增的
 只能用于元素节点。
 `object.setAttribute(attribute,value)`
 如果一个元素的属性不存在，setAttribute先创建这个属性，再给他赋值。
+
+### 其他DOM属性
+#### childNodes
+获取任何一个元素的所有子元素，它是一个包含这个元素全部子元素的数组：`element.childNodes`。返回的数组包含所有类型的节点，不仅仅是元素节点。文档里几乎每一样东西都是一个节点，甚至连空格和换行符都会被解释为节点。
+- 获取body元素所有子元素
+`document.getElementsByTagName('body')[0].childNodes`
+
+#### nodeType
+每一个节点都有nodeType属性，可以知道节点类型。nodeType的值是数字，共12种可取值，具有实用价值的有3种：
+- 元素节点的nodeType属性值是1；
+- 属性节点的nodeType属性值是2；
+- 文本节点的nodeType属性值是3；
+
+#### nodeValue
+可以改变一个文本节点的值。
+获取p元素的文本：
+> 正确做法
+p.childNodes[0].nodeValue
+错误做法
+p.nodeValue
+p是元素节点，他的nodeValue是空的，只有获取到p的文本节点，才能获取内容。
+
+#### firstChild和lastChild
+firstChild等同于childNodes[0];
+lastChild等同于childNodes[childNodes.length-1]
+
 ### style对象
 `document.getElementById('ex').style`
 #### 获取样式
@@ -179,7 +211,17 @@ className属性是一个可读写的属性，凡是元素节点都有这个属�
 
 追加一个属性，类名intro前面要有空格
 `p.className+=" intro"`
-## JS实现动画效果
+
+## 最佳实践
+- 平稳退化：确保网页在没有js的情况下也能正常工作
+- 分离js：把网页的结构和内容与js脚本的动作行为分开
+- 向后兼容性：确保老版本浏览器不会因为js而死掉
+- 性能考虑：确定脚本执行的性能最优
+
+## JS DOM实例-图片库
+
+
+## JS DOM实例-动画效果
 要实现的效果：把一个元素从一个点沿直线缓慢移动到另一个点。
 设置元素的起始位置，和终止位置，设置元素移动过去的时间。
 1. 起始位置函数positionMessage()
