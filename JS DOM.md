@@ -124,6 +124,8 @@ document对象也能获得网页上的任何一个元素的信息。
 #### 属性节点
 比如 `title='model'`是一个属性节点
 
+### DOM方法
+
 #### 获取元素
 3种DOM方法可获取元素节点，分别通过元素ID，标签名字，类名字来获取。
 ##### 1.getElementById
@@ -147,28 +149,52 @@ HTML5 DOM中新增的
 - getElementByTagName和getElementByClassName将返回一个对象数组，他们分别对应着文档里的一组特定的元素节点
 - 每个节点都是一个对象
 
-### 获取和设置属性
-#### getAttribute
+#### 获取和设置属性
+##### 4.getAttribute
 是一个函数，他只有一个参数，就是打算查询的属性的名字。
 不属于document对象，所以不能通过document对象调用。他只能通过元素节点对象调用。
-#### setAttribute
+#####  5.setAttribute
 只能用于元素节点。
 `object.setAttribute(attribute,value)`
 如果一个元素的属性不存在，setAttribute先创建这个属性，再给他赋值。
 
-### 其他DOM属性
-#### childNodes
+#### 动态创建
+##### 6.creatElement
+创建元素节点
+`document.creatElement('p');`
+创建了一个p元素，但还不是DOM树的节点组成部分，还无法显示在浏览器窗口里。
+##### 7.appendChild
+`parent.appendChild(child);`
+向parent里插入节点child
+
+##### 8.creatTextNode
+创建文本节点
+`document.creatTextNode('hello');`
+创建完成之后，用appendChild把文本节点插入到p中。
+
+```javascript
+window.onload=funcrion(){
+var para=document.createElement('p');
+var testdiv=document.createElement('testdiv');
+testdiv.appendChild(para);
+var txt=document.createTextNode('hello world');
+para.appendChild(txt);
+}
+```
+### DOM属性
+#### DOM属性-遍历与过滤
+##### 1.childNodes
 获取任何一个元素的所有子元素，它是一个包含这个元素全部子元素的数组：`element.childNodes`。返回的数组包含所有类型的节点，不仅仅是元素节点。文档里几乎每一样东西都是一个节点，甚至连空格和换行符都会被解释为节点。
 - 获取body元素所有子元素
 `document.getElementsByTagName('body')[0].childNodes`
 
-#### nodeType
+##### 2.nodeType
 每一个节点都有nodeType属性，可以知道节点类型。nodeType的值是数字，共12种可取值，具有实用价值的有3种：
 - 元素节点的nodeType属性值是1；
 - 属性节点的nodeType属性值是2；
 - 文本节点的nodeType属性值是3；
 
-#### nodeValue
+##### 3.nodeValue
 可以改变一个文本节点的值。
 获取p元素的文本：
 > 正确做法
@@ -177,10 +203,18 @@ p.childNodes[0].nodeValue
 p.nodeValue
 p是元素节点，他的nodeValue是空的，只有获取到p的文本节点，才能获取内容。
 
-#### firstChild和lastChild
+##### 4.firstChild和lastChild
 firstChild等同于childNodes[0];
 lastChild等同于childNodes[childNodes.length-1]
 
+#### DOM属性-动态创建
+##### 5.innerHTML
+读，写某给定元素里HTML内容。
+
+```javascript
+var testdiv=document.getElementById('testdiv');
+testdiv.innerHTML='<i>2</i>';
+```
 ### style对象
 `document.getElementById('ex').style`
 #### 获取样式
@@ -213,10 +247,33 @@ className属性是一个可读写的属性，凡是元素节点都有这个属�
 `p.className+=" intro"`
 
 ## 最佳实践
-- 平稳退化：确保网页在没有js的情况下也能正常工作
-- 分离js：把网页的结构和内容与js脚本的动作行为分开
-- 向后兼容性：确保老版本浏览器不会因为js而死掉
-- 性能考虑：确定脚本执行的性能最优
+### 1. 平稳退化
+确保网页在没有js的情况下也能正常工作
+### 2. 分离js
+把网页的结构和内容与js脚本的动作行为分开
+### 3. 向后兼容性
+确保老版本浏览器不会因为js而死掉
+### 4. 性能考虑
+确定脚本执行的性能最优
+
+## DOM通用函数
+### 1. addLoadEvent()：将函数绑定到window.onload事件
+- 把现有的window.onload事件处理函数的值存入变量oldonload
+- 如果在这个处理函数上还没有绑定任何函数，就像平时那样把新函数添加给它
+- 如果在这个处理函数上已经绑定了一些函数，就把新函数追加到现有指令的末尾
+
+```
+addLoadEvent(func){
+    var oldonload=window.onload;
+    if(typeof window.onload!='function'){
+        window.onload=func;
+    }
+    else{
+        oldonload();
+        func();
+    }
+}
+```
 
 ## JS DOM实例-图片库
 

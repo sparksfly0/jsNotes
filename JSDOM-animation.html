@@ -230,6 +230,36 @@
 			description.firstChild.nodeValue=imgTitle;
 
 		}
+		//书上最终版
+		// 检查图片库是否存在，遍历图片库的链接，把showpic绑定到a上
+		function prepareGallery(){
+			if(!document.getElementsByTagName) return false;
+			if(!document.getElementById) return false;
+			if(!document.getElementById('imgLinkList')) return false;
+			var imgLinkList=document.getElementById('imgLinkList');
+			var links=imgLinkList.getElementsByTagName('a');
+			for(var i=0;i<links.length;i++){
+				links[i].onclick=function(){
+					return showPic3(this)?false:true;
+				}
+			}
+		}
+		//检查placeholder是否是个图片，检查标题description是否存在，检查a是否有title属性，检查标题的第一个子节点是否是文字节点
+		function showPic3(whichpic){
+			if(!document.getElementById('placeholder')) return false;
+			var source=whichpic.getAttribute('href');
+			var placeholder=document.getElementById('placeholder');
+			if(placeholder.nodeName!='IMG') return false;
+			placeholder.setAttribute('src', source);
+			if(document.getElementById('description')){
+				var text=whichpic.getAttribute('title')?whichpic.getAttribute('title'):'';
+				var description=document.getElementById('description');
+				if(description.firstChild.nodeType==3){
+					description.firstChild.nodeValue=text;
+				}
+			}
+			return true;
+		}
 		
 
 	</script>
@@ -290,5 +320,12 @@
 	.show-2 .opacity1{transition: opacity 0.5s;opacity: 0;}
 	.show-2 .opacity2{transition: opacity 2s;opacity: 1;display: block;}
 	</style>
+	
+	<script>
+		console.log(typeof window.onload);
+		window.onload=showPic;
+		console.log(typeof window.onload);
+	</script>
+	
 </body>
 </html>
