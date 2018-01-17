@@ -1,5 +1,5 @@
 [TOC]
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
 $A\in D$
 ## 语法
 ### 变量
@@ -460,3 +460,4 @@ if(t<final_y){
     t=t+dist;
 }
 ```
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
