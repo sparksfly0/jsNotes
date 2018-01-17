@@ -1,3 +1,5 @@
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+<script></script>
 [TOC]
 
 $A\in D$
@@ -460,4 +462,4 @@ if(t<final_y){
     t=t+dist;
 }
 ```
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
